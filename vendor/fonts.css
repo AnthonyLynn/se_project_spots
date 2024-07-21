@@ -1,5 +1,15 @@
+/* font-family: Poppins, Arial, Helvetica, sans-serif; */
+
 @font-face {
-  font-family: "Poppins";
+  font-family: Poppins;
+  font-style: normal;
   font-weight: 500;
-  src: url(../fonts/Poppins-Medium.ttf) format("ttf");
+  src: url(../fonts/Poppins-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/Poppins-Regular.ttf) format("truetype");
 }

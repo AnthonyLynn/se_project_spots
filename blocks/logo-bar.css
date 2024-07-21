@@ -1,9 +1,9 @@
-.header {
+.logo-bar {
   background-color: #ffffffcc;
   display: flex;
 }
 
-.header__logo {
+.logo-bar__logo {
   width: 94px;
   height: 26px;
   margin: 10px auto;

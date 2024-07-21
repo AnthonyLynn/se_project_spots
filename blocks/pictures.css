@@ -1,0 +1,19 @@
+.pictures {
+  padding: 20px 0 40px 0;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(
+    auto-fit,
+    /* Solution taken from: https://stackoverflow.com/a/69154193/26426336 */
+      minmax(min(100%/2, max(288px, 100%/4)), 1fr)
+  );
+  grid-gap: 40px 20px;
+  border-bottom: 1px solid #21212166;
+}
+
+@media screen and (max-width: 768px) {
+  .pictures {
+    padding-bottom: 20px;
+    grid-gap: 20px;
+  }
+}
