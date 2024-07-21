@@ -1,3 +1,5 @@
+https://anthonylynn.github.io/se_project_spots/
+
 # Project 3: Spots
 
 ### Overview
@@ -8,9 +10,9 @@
 
 **Intro**
 
-This is a website project for the TripleTen course work, specifically sprint 3. It features a theoretical site where users would see diffrent pictures posted by an user and the users profile its self.
+A website project for the TripleTen coursework, specifically sprint 3. It features a theoretical site where users would see different pictures posted by a user and the user's profile.
 
-The site was built using diffrent display types such as flex and grid. It has a responsive layout that can be viewed from sizes larger than 320px with relative sizes and media quaries.
+The site uses different display types, such as flex and grid. It has a responsive layout that can be viewed from sizes larger than 320px with relative sizes and media queries.
 
 **Figma**
 
@@ -19,9 +21,13 @@ The site was built using diffrent display types such as flex and grid. It has a 
 **Images**
 
 Page:
+
 ![Page](images/screenshot.png)
 
 Responsive Layout:
+
 ![Resizing](images/resizing.gif)
 
 **Feature Video**
+
+https://youtu.be/GYTr2iD7Q6M

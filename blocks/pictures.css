@@ -1,5 +1,7 @@
 .pictures {
   padding: 20px 0 40px 0;
+  margin: 0;
+  list-style: none;
   display: grid;
   justify-content: center;
   grid-template-columns: repeat(

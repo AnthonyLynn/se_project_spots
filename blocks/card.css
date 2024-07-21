@@ -1,33 +1,15 @@
 .card {
+  padding: 0;
   width: 100%;
 }
 
 .card__image {
   width: 100%;
-  padding-bottom: 100%;
+  aspect-ratio: 1;
   border-radius: 8px;
   margin-bottom: 12px;
-  background-size: cover;
-  background-position: center;
-}
-
-.card__image_picture_window {
-  background-image: url(../images/1-photo-by-moritz-feldmann-from-pexels.jpg);
-}
-.card__image_picture_restaurant {
-  background-image: url(../images/2-photo-by-ceiline-from-pexels.jpg);
-}
-.card__image_picture_cafe {
-  background-image: url(../images/3-photo-by-tubanur-dogan-from-pexels.jpg);
-}
-.card__image_picture_bridge {
-  background-image: url(../images/4-photo-by-maurice-laschet-from-pexels.jpg);
-}
-.card__image_picture_tunnel {
-  background-image: url(../images/5-photo-by-van-anh-nguyen-from-pexels.jpg);
-}
-.card__image_picture_house {
-  background-image: url(../images/6-photo-by-moritz-feldmann-from-pexels.jpg);
+  object-fit: cover;
+  object-position: center;
 }
 
 .card__bottom {
@@ -40,7 +22,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  font-family: Poppins, Arial, Helvetica, sans-serif;
   font-size: 20px;
   font-weight: 500;
   line-height: 1.2;
@@ -50,16 +32,30 @@
 }
 
 .card__like-icon {
+  padding: 0;
+  border: none;
+  background: url(../images/like-icon.svg) no-repeat;
+  background-size: 100%;
+  background-position: center;
+  width: 23px;
+  height: 20px;
   opacity: 40%;
 }
 
 .card__like-icon:hover {
   opacity: 100%;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 768px) {
   .card__text {
     font-size: 16px;
     line-height: 1;
+  }
+
+  .card__like-icon {
+    width: 20px;
+    min-width: 20px;
+    height: 18px;
   }
 }
