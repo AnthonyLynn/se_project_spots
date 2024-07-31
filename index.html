@@ -114,4 +114,35 @@
     </div>
     <script src="scripts/index.js" defer></script>
   </body>
+  <div class="modal">
+    <div class="modal__container">
+      <div class="modal__top">
+        <h2 class="modal__header">Edit Profile</h2>
+        <button class="modal__exit"></button>
+      </div>
+      <form class="edit-profile">
+        <fieldset class="edit-profile__fieldset">
+          <label for="name" class="edit-profile__label">Name</label>
+          <input
+            id="name"
+            type="text"
+            class="edit-profile__input"
+            placeholder="Type your name"
+            required
+          />
+          <label for="description" class="edit-profile__label">
+            Description
+          </label>
+          <input
+            id="description"
+            type="text"
+            class="edit-profile__input"
+            placeholder="Describe yourself"
+            required
+          />
+        </fieldset>
+        <button type="submit" class="edit-profile__submit">Save</button>
+      </form>
+    </div>
+  </div>
 </html>
