@@ -25,9 +25,20 @@ const initialCards = [
   ),
 ];
 
+const modal = document.querySelector(".modal");
+const profileEditBtn = document.querySelector(".profile__edit-button");
+const modalCloseBtn = modal.querySelector(".modal__exit");
+
 function createCard(name, link) {
   return {
     name: name,
     link: link,
   };
 }
+
+function toggleModal() {
+  modal.classList.toggle("modal_hidden");
+}
+
+profileEditBtn.addEventListener("click", toggleModal);
+modalCloseBtn.addEventListener("click", toggleModal);

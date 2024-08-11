@@ -53,10 +53,15 @@
   background-repeat: no-repeat;
   background-position: center;
   opacity: 40%;
+  cursor: pointer;
 }
 
 .modal__exit:hover {
   opacity: 100%;
+}
+
+.modal_hidden {
+  display: none;
 }
 
 @media screen and (max-width: 768px) {

@@ -50,6 +50,7 @@
   background-color: #212121;
   border: none;
   border-radius: 8px;
+  cursor: pointer;
 }
 
 .edit-profile__submit:hover {
