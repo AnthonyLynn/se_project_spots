@@ -40,72 +40,15 @@
           </button>
         </section>
         <ul class="pictures">
-          <li class="card">
-            <img
-              src="images/1-photo-by-moritz-feldmann-from-pexels.jpg"
-              alt="window"
-              class="card__image"
-            />
-            <div class="card__bottom">
-              <h2 class="card__text">Val Thorens</h2>
-              <button type="button" class="card__like-icon"></button>
-            </div>
-          </li>
-          <li class="card">
-            <img
-              src="images/2-photo-by-ceiline-from-pexels.jpg"
-              alt="restaurant"
-              class="card__image"
-            />
-            <div class="card__bottom">
-              <h2 class="card__text">Restaurant terrace</h2>
-              <button type="button" class="card__like-icon"></button>
-            </div>
-          </li>
-          <li class="card">
-            <img
-              src="images/3-photo-by-tubanur-dogan-from-pexels.jpg"
-              alt="cafe"
-              class="card__image"
-            />
-            <div class="card__bottom">
-              <h2 class="card__text">An outdoor cafe</h2>
-              <button type="button" class="card__like-icon"></button>
-            </div>
-          </li>
-          <li class="card">
-            <img
-              src="images/4-photo-by-maurice-laschet-from-pexels.jpg"
-              alt="bridge"
-              class="card__image"
-            />
-            <div class="card__bottom">
-              <h2 class="card__text">A very long bridge, over the forest...</h2>
-              <button type="button" class="card__like-icon"></button>
-            </div>
-          </li>
-          <li class="card">
-            <img
-              src="images/5-photo-by-van-anh-nguyen-from-pexels.jpg"
-              alt="tunnel"
-              class="card__image"
-            />
-            <div class="card__bottom">
-              <h2 class="card__text">Tunnel with morning light</h2>
-              <button type="button" class="card__like-icon"></button>
-            </div>
-          </li>
-          <li class="card">
-            <img
-              src="images/6-photo-by-moritz-feldmann-from-pexels.jpg"
-              alt="house"
-              class="card__image"
-            />
-            <div class="card__bottom">
-              <h2 class="card__text">Mountain house</h2>
-              <button type="button" class="card__like-icon"></button>
-            </div>
-          </li>
+          <template id="card-template">
+            <li class="card">
+              <img src="src-image" alt="window" class="card__image" />
+              <div class="card__bottom">
+                <h2 class="card__text">Title</h2>
+                <button type="button" class="card__like-icon"></button>
+              </div>
+            </li>
+          </template>
         </ul>
       </main>
       <footer class="footer">
@@ -114,7 +57,7 @@
     </div>
     <script src="scripts/index.js" defer></script>
   </body>
-  <div class="modal">
+  <div class="modal modal_hidden">
     <div class="modal__container">
       <div class="modal__top">
         <h2 class="modal__header">Edit Profile</h2>
