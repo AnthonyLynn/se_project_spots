@@ -56,7 +56,7 @@
   -webkit-box-orient: vertical;
 }
 
-.profile__edit-button {
+.profile__edit-btn {
   border: none;
   background: url(../images/edit-icon.svg) no-repeat;
   background-size: 16px 16px;
@@ -71,12 +71,12 @@
   color: #212121;
 }
 
-.profile__edit-button:hover {
+.profile__edit-btn:hover {
   cursor: pointer;
   opacity: 100%;
 }
 
-.profile__post-button {
+.profile__post-btn {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,7 +94,7 @@
   color: #fcf5e5;
 }
 
-.profile__post-button:hover {
+.profile__post-btn:hover {
   background-color: #212121cc;
   cursor: pointer;
 }

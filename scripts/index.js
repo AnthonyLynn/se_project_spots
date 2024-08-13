@@ -1,3 +1,6 @@
+//-- Variables --//
+
+// Card data
 const initialCards = [
   {
     name: "Door",
@@ -25,25 +28,31 @@ const initialCards = [
   },
 ];
 
-const modal = document.querySelector(".modal");
-const profileEditBtn = document.querySelector(".profile__edit-button");
-const modalCloseBtn = modal.querySelector(".modal__exit");
-
+// Avatar info
 const profile = document.querySelector(".profile");
 const profileName = profile.querySelector(".profile__name");
 const profileOccupation = profile.querySelector(".profile__occupation");
+const profileEditBtn = document.querySelector(".profile__edit-btn");
 
-const editProfileFieldset = modal.querySelector(".edit-profile__fieldset");
-const editProfileName = editProfileFieldset.querySelector("#name");
-const editProfileDescription =
-  editProfileFieldset.querySelector("#description");
+// Modal
+const modal = document.querySelector(".modal");
+const modalCloseBtn = modal.querySelector(".modal__exit-btn");
 
-const editForm = modal.querySelector(".edit-profile");
+// Profile form
+const profileForm = document.forms["profile-form"];
+const profileFormFieldset = profileForm.querySelector(".modal__fieldset");
+const profileFormInputName = profileFormFieldset.querySelector("#name");
+const profileFormInputDescription =
+  profileFormFieldset.querySelector("#description");
 
+// Cards
 const cardTemplate = document.querySelector("#card-template").content;
-const pictures = document.querySelector(".pictures");
+const cardConatiner = document.querySelector(".card-container");
 
-function getCardElement(cardData) {
+//-- Functions --//
+
+// Returns a created card element from card data
+function createCard(cardData) {
   const cardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardElementImage = cardElement.querySelector(".card__image");
   const cardElementText = cardElement.querySelector(".card__text");
@@ -52,37 +61,48 @@ function getCardElement(cardData) {
   cardElementImage.src = cardData.link;
   cardElementImage.alt = cardData.name;
 
-  pictures.prepend(cardElement);
+  return cardElement;
+}
+
+function getCardElement(cardData) {
+  const newCard = createCard(cardData);
+  cardConatiner.prepend(newCard);
 }
 
 function loadCards(data) {
   for (let cardData of data) {
-    console.log(cardData);
     getCardElement(cardData);
   }
 }
 
-function toggleModal() {
-  modal.classList.toggle("modal_hidden");
+function openModal() {
+  loadForm();
+  modal.classList.add("modal_opened");
+}
+
+function closeModal() {
+  modal.classList.remove("modal_opened");
 }
 
 function loadForm() {
-  editProfileName.value = profileName.textContent;
-  editProfileDescription.value = profileOccupation.textContent;
+  profileFormInputName.value = profileName.textContent;
+  profileFormInputDescription.value = profileOccupation.textContent;
 }
 
 function submitEditProfile(evt) {
   evt.preventDefault();
 
-  profileName.textContent = editProfileName.value;
-  profileOccupation.textContent = editProfileDescription.value;
+  profileName.textContent = profileFormInputName.value;
+  profileOccupation.textContent = profileFormInputDescription.value;
 
-  toggleModal();
+  closeModal();
 }
 
-profileEditBtn.addEventListener("click", toggleModal);
-modalCloseBtn.addEventListener("click", toggleModal);
-editForm.addEventListener("submit", submitEditProfile);
+//-- Events --//
+
+profileEditBtn.addEventListener("click", openModal);
+modalCloseBtn.addEventListener("click", closeModal);
+profileForm.addEventListener("submit", submitEditProfile);
 
 loadCards(initialCards);
 loadForm();

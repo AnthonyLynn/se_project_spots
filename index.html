@@ -26,11 +26,11 @@
               <h1 class="profile__name">Bessie Coleman</h1>
               <p class="profile__occupation">Civil Aviator</p>
             </div>
-            <button type="button" class="profile__edit-button">
+            <button type="button" class="profile__edit-btn">
               Edit Profile
             </button>
           </div>
-          <button type="button" class="profile__post-button">
+          <button type="button" class="profile__post-btn">
             <img
               src="images/plus-icon.svg"
               alt="Plus Icon"
@@ -39,7 +39,7 @@
             New Post
           </button>
         </section>
-        <ul class="pictures">
+        <ul class="card-container">
           <template id="card-template">
             <li class="card">
               <img src="src-image" alt="window" class="card__image" />
@@ -57,34 +57,32 @@
     </div>
     <script src="scripts/index.js" defer></script>
   </body>
-  <div class="modal modal_hidden">
+  <div class="modal">
     <div class="modal__container">
       <div class="modal__top">
         <h2 class="modal__header">Edit Profile</h2>
-        <button class="modal__exit"></button>
+        <button class="modal__exit-btn"></button>
       </div>
-      <form class="edit-profile">
-        <fieldset class="edit-profile__fieldset">
-          <label for="name" class="edit-profile__label">Name</label>
+      <form class="modal__form" id="profile-form">
+        <fieldset class="modal__fieldset">
+          <label for="name" class="modal__label">Name</label>
           <input
             id="name"
             type="text"
-            class="edit-profile__input"
+            class="modal__input"
             placeholder="Type your name"
             required
           />
-          <label for="description" class="edit-profile__label">
-            Description
-          </label>
+          <label for="description" class="modal__label"> Description </label>
           <input
             id="description"
             type="text"
-            class="edit-profile__input"
+            class="modal__input"
             placeholder="Describe yourself"
             required
           />
         </fieldset>
-        <button type="submit" class="edit-profile__submit">Save</button>
+        <button type="submit" class="modal__submit-btn">Save</button>
       </form>
     </div>
   </div>
