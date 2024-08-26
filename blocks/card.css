@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   padding: 0;
   width: 100%;
 }
@@ -10,6 +11,7 @@
   margin-bottom: 12px;
   object-fit: cover;
   object-position: center;
+  cursor: pointer;
 }
 
 .card__bottom {
@@ -42,8 +44,35 @@
   opacity: 40%;
 }
 
+.card__like-icon_selected {
+  background-image: url("../images/like-icon_selected.svg");
+  opacity: 100%;
+}
+
 .card__like-icon:hover {
   opacity: 100%;
+  cursor: pointer;
+}
+
+.card__like-icon_selected:hover {
+  opacity: 50%;
+}
+
+.card__trash-icon {
+  padding: 0;
+  border: none;
+  width: 32px;
+  height: 32px;
+  background: url(../images/trash-icon.svg) no-repeat;
+  background-size: 100%;
+  background-position: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.card__trash-icon:hover {
+  background-image: url("../images/trash-icon_hover.svg");
   cursor: pointer;
 }
 
