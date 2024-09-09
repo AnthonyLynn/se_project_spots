@@ -56,8 +56,7 @@
         <p class="footer__copyright">2024 © Spots</p>
       </footer>
     </div>
-    <script src="scripts/index.js" defer></script>
-    <div class="modal" id="profile-modal">
+    <div class="modal modal_opened" id="profile-modal">
       <div class="modal__container">
         <div class="modal__top">
           <h2 class="modal__header">Edit Profile</h2>
@@ -65,22 +64,36 @@
         </div>
         <form class="modal__form" id="profile-form">
           <fieldset class="modal__fieldset">
-            <label for="name" class="modal__label">Name</label>
-            <input
-              id="name"
-              type="text"
-              class="modal__input"
-              placeholder="Type your name"
-              required
-            />
-            <label for="description" class="modal__label">Description</label>
-            <input
-              id="description"
-              type="text"
-              class="modal__input"
-              placeholder="Describe yourself"
-              required
-            />
+            <label for="name" class="modal__field">
+              Name
+              <input
+                id="name"
+                type="text"
+                class="modal__input"
+                placeholder="Type your name"
+                minlength="2"
+                maxlength="40"
+                required
+              />
+              <span class="modal__error name-error"
+                >Please Fill out this field.</span
+              >
+            </label>
+            <label for="description" class="modal__field">
+              Description
+              <input
+                id="description"
+                type="text"
+                class="modal__input"
+                placeholder="Describe yourself"
+                minlength="2"
+                maxlength="200"
+                required
+              />
+              <span class="modal__error description-error"
+                >Please Fill out this field.</span
+              >
+            </label>
           </fieldset>
           <button type="submit" class="modal__submit-btn">Save</button>
         </form>
@@ -94,22 +107,34 @@
         </div>
         <form class="modal__form" id="post-form">
           <fieldset class="modal__fieldset">
-            <label for="image-link" class="modal__label">Image link</label>
-            <input
-              id="image-link"
-              type="text"
-              class="modal__input"
-              placeholder="Paste a link to the picture"
-              required
-            />
-            <label for="caption" class="modal__label">Caption</label>
-            <input
-              id="caption"
-              type="text"
-              class="modal__input"
-              placeholder="Type your caption"
-              required
-            />
+            <label for="image-link" class="modal__field">
+              Image link
+              <input
+                id="image-link"
+                type="url"
+                class="modal__input"
+                placeholder="Paste a link to the picture"
+                required
+              />
+              <span class="modal__error image-link-error"
+                >Please Fill out this field.</span
+              >
+            </label>
+            <label for="caption" class="modal__field">
+              Caption
+              <input
+                id="caption"
+                type="text"
+                class="modal__input"
+                placeholder="Type your caption"
+                minlength="2"
+                maxlength="30"
+                required
+              />
+              <span class="modal__error caption-error"
+                >Please Fill out this field.</span
+              >
+            </label>
           </fieldset>
           <button type="submit" class="modal__submit-btn">Save</button>
         </form>
@@ -126,5 +151,7 @@
         <p class="modal__caption">Golden Gate bridge</p>
       </div>
     </div>
+    <script src="scripts/validation.js" defer></script>
+    <script src="scripts/index.js" defer></script>
   </body>
 </html>

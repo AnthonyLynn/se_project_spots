@@ -145,6 +145,7 @@ function loadImageModal(cardData) {
   imageModalImage.alt = cardData.name;
   imageModalCaption.textContent = cardData.name;
 }
+
 //-- Events --//
 
 modalCloseButtons.forEach((exitBtn) => {

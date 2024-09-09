@@ -106,18 +106,18 @@
   border: none;
 }
 
-.modal__label {
+.modal__field {
+  margin: 0 0 32px;
   display: block;
   font-family: Poppins, Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 1.1;
   color: #212121b2;
-  margin: 0 0 8px;
 }
 
 .modal__input {
-  margin: 0 0 32px;
+  margin: 8px 0 0;
   padding: 16px 12px;
   font-family: Poppins, Arial, Helvetica, sans-serif;
   font-size: 20px;
@@ -132,6 +132,34 @@
 
 .modal__input::placeholder {
   color: #2121214d;
+}
+
+.modal__input:hover {
+  border-color: #212121;
+  cursor: pointer;
+}
+
+.modal__input:focus {
+  cursor: text;
+}
+
+.modal__input_error {
+  border-color: #ff000099;
+}
+
+.modal__error {
+  display: none;
+  margin: 8px 0 0;
+  font-family: Poppins, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.1;
+  color: #ff0000b2;
+}
+
+.modal__error_visable {
+  display: block;
+  visibility: visible;
 }
 
 .modal__submit-btn {
