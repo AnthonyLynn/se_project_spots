@@ -56,7 +56,7 @@
         <p class="footer__copyright">2024 © Spots</p>
       </footer>
     </div>
-    <div class="modal modal_opened" id="profile-modal">
+    <div class="modal" id="profile-modal">
       <div class="modal__container">
         <div class="modal__top">
           <h2 class="modal__header">Edit Profile</h2>
@@ -75,9 +75,9 @@
                 maxlength="40"
                 required
               />
-              <span class="modal__error name-error"
-                >Please Fill out this field.</span
-              >
+              <span class="modal__error" id="name-error">
+                Please Fill out this field.
+              </span>
             </label>
             <label for="description" class="modal__field">
               Description
@@ -90,12 +90,12 @@
                 maxlength="200"
                 required
               />
-              <span class="modal__error description-error"
-                >Please Fill out this field.</span
-              >
+              <span class="modal__error" id="description-error">
+                Please Fill out this field.
+              </span>
             </label>
           </fieldset>
-          <button type="submit" class="modal__submit-btn">Save</button>
+          <button type="submit" class="modal__button">Save</button>
         </form>
       </div>
     </div>
@@ -116,9 +116,9 @@
                 placeholder="Paste a link to the picture"
                 required
               />
-              <span class="modal__error image-link-error"
-                >Please Fill out this field.</span
-              >
+              <span class="modal__error" id="image-link-error">
+                Please Fill out this field.
+              </span>
             </label>
             <label for="caption" class="modal__field">
               Caption
@@ -131,12 +131,12 @@
                 maxlength="30"
                 required
               />
-              <span class="modal__error caption-error"
-                >Please Fill out this field.</span
-              >
+              <span class="modal__error" id="caption-error">
+                Please Fill out this field.
+              </span>
             </label>
           </fieldset>
-          <button type="submit" class="modal__submit-btn">Save</button>
+          <button type="submit" class="modal__button">Save</button>
         </form>
       </div>
     </div>
