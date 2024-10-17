@@ -1,8 +1,9 @@
 export default class Card {
   constructor(data, selector, onImageClick) {
+    this._card = document.querySelector(selector);
     this._name = data.name;
     this._link = data.link;
-    this._card = document.querySelector(selector);
+    this._id = data._id;
     this._onImageClick = onImageClick;
   }
 
