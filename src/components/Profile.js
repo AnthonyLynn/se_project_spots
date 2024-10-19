@@ -8,13 +8,22 @@ export default class Profile {
     this._onEdit = onEdit;
   }
 
-  setInfo(data) {
+  setData(data) {
     this.avatarElem.src = data.avatar;
     this.nameElem.textContent = data.name;
-    profile.aboutElem.textContent = data.about;
+    this.aboutElem.textContent = data.about;
+  }
+
+  setAvatar(data) {
+    this.avatarElem.src = data.avatar;
+  }
+
+  setInfo(data) {
+    this.nameElem.textContent = data.name;
+    this.aboutElem.textContent = data.about;
   }
 
   setEventListeners() {
-    this._editBtn.addEventListener(this._onEdit);
+    this._editBtn.addEventListener("click", this._onEdit);
   }
 }

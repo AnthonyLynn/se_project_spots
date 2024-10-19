@@ -4,12 +4,14 @@ import Section from "../components/Section.js";
 import Profile from "../components/Profile.js";
 import ModalWithForm from "../components/ModalWithForm.js";
 import ModalWithImage from "../components/ModalWithImage.js";
+import ModalWithOption from "../components/ModalWithOption.js";
 import Api from "../utils/Api.js";
 import {
   validatorSettings,
   cardTemplate,
   cardContainerSelector,
   profileSelector,
+  deleteModalSelector,
   profileModalSelector,
   postModalSelector,
   imageModalSelector,
@@ -30,22 +32,22 @@ const api = new Api({
 // Profile logic
 const profile = new Profile(profileSelector, () => {
   profileModal.setInputValues({
-    name: this.nameElem.textContent,
-    about: this.aboutElem.textContent,
+    name: profile.nameElem.textContent,
+    about: profile.aboutElem.textContent,
   });
   profileModal.open();
 });
 
-api.getUser().then((data) => {
-  profile.setData(data);
-});
+profile.setEventListeners();
 
-api.editUserInfo();
+api.getUser().then((data) => profile.setData(data));
 
 // Profile Modal logic
 function onProfileFormSubmit(inputValues) {
-  api.editUserInfo(inputValues).then(profile.setInfo);
-  profileModal.close();
+  api.editUserInfo(inputValues).then((data) => {
+    profile.setInfo(data);
+    profileModal.close();
+  });
 }
 
 const profileModal = new ModalWithForm(
@@ -61,6 +63,10 @@ const profileFormValidator = new FormValidator(
 
 profileFormValidator.enableValidation();
 
+// Delete Modal logic
+const deleteModal = new ModalWithOption(deleteModalSelector, onCardDeletion);
+deleteModal.setEventListeners();
+
 // Card logic
 api.getInitialCards().then((data) => {
   data.forEach((cardData) => {
@@ -68,11 +74,26 @@ api.getInitialCards().then((data) => {
   });
 });
 
-function createCard(cardData) {
-  const card = new Card(cardData, cardTemplate, () => {
-    imageModal.loadImage(cardData);
-    imageModal.open();
+function onCardDeletion(card) {
+  api.removeCard(card.getId()).then(() => {
+    card.remove();
+    deleteModal.close();
   });
+}
+
+function createCard(cardData) {
+  const card = new Card(
+    cardData,
+    cardTemplate,
+    () => {
+      imageModal.loadImage(cardData);
+      imageModal.open();
+    },
+    () => {
+      deleteModal.toDelete = card;
+      deleteModal.open();
+    }
+  );
 
   cardContainer.addItem(card.generateCard(), "prepend");
 }

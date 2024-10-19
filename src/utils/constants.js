@@ -10,6 +10,7 @@ export const cardContainerSelector = ".card-container";
 export const cardTemplate = "#card-template";
 
 export const profileSelector = ".profile";
+export const deleteModalSelector = "#delete-modal";
 export const profileModalSelector = "#profile-modal";
 export const postModalSelector = "#post-modal";
 export const imageModalSelector = "#image-modal";
