@@ -23,11 +23,19 @@
       </header>
       <main class="content">
         <section class="profile">
-          <img
-            src="<%= require('./images/avatar.jpg')%>"
-            alt="Avatar"
-            class="profile__avatar"
-          />
+          <div class="profile__avatar">
+            <img
+              src="<%= require('./images/avatar.jpg')%>"
+              alt="Avatar"
+              class="profile__image"
+            />
+            <button
+              type="button"
+              class="profile__edit-btn profile__edit-btn_type_avatar"
+            >
+              Edit Avatar
+            </button>
+          </div>
           <div class="profile__info">
             <div class="profile__details">
               <h1 class="profile__name">Bessie Coleman</h1>
@@ -106,6 +114,32 @@
         </form>
       </div>
     </div>
+    <div class="modal" id="avatar-modal">
+      <div class="modal__container">
+        <div class="modal__top">
+          <h2 class="modal__header">Edit profile avatar</h2>
+          <button class="modal__exit-btn"></button>
+        </div>
+        <form class="modal__form" id="avatar-form">
+          <fieldset class="modal__fieldset">
+            <label for="avatar" class="modal__field">
+              Profile Picture
+              <input
+                id="avatar"
+                type="url"
+                class="modal__input"
+                placeholder="Paste the link to the image"
+                required
+              />
+              <span class="modal__error" id="avatar-error">
+                Please Fill out this field.
+              </span>
+            </label>
+          </fieldset>
+          <button type="submit" class="modal__button">Save</button>
+        </form>
+      </div>
+    </div>
     <div class="modal" id="post-modal">
       <div class="modal__container modal__container_type_post">
         <div class="modal__top">
@@ -127,10 +161,10 @@
                 Please Fill out this field.
               </span>
             </label>
-            <label for="caption" class="modal__field">
+            <label for="name" class="modal__field">
               Caption
               <input
-                id="caption"
+                id="name"
                 type="text"
                 class="modal__input"
                 placeholder="Type your caption"
@@ -138,7 +172,7 @@
                 maxlength="30"
                 required
               />
-              <span class="modal__error" id="caption-error">
+              <span class="modal__error" id="name-error">
                 Please Fill out this field.
               </span>
             </label>

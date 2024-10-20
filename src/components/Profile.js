@@ -1,11 +1,12 @@
 export default class Profile {
-  constructor(selector, onEdit) {
+  constructor(selector, onEdit, onAvatarEdit) {
     this._profile = document.querySelector(selector);
-    this.avatarElem = this._profile.querySelector(".profile__avatar");
+    this.avatarElem = this._profile.querySelector(".profile__image");
     this.nameElem = this._profile.querySelector(".profile__name");
     this.aboutElem = this._profile.querySelector(".profile__about");
     this._editBtn = this._profile.querySelector(".profile__edit-btn");
     this._onEdit = onEdit;
+    this._onAvatarEdit = onAvatarEdit;
   }
 
   setData(data) {

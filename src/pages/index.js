@@ -13,12 +13,11 @@ import {
   profileSelector,
   deleteModalSelector,
   profileModalSelector,
+  avatarModalSelector,
   postModalSelector,
   imageModalSelector,
 } from "../utils/constants.js";
 import "./index.css";
-
-//-- Variables --//
 
 // Api
 const api = new Api({
@@ -56,14 +55,25 @@ const profileModal = new ModalWithForm(
 );
 profileModal.setEventListeners();
 
-const profileFormValidator = new FormValidator(
-  validatorSettings,
-  profileModal.getForm()
-);
+// Avatar Modal logic
+function onAvatarFormSubmit(inputValues) {
+  api.editUserAvatar(inputValues).then((data) => {
+    profile.setAvatar(data);
+    avatarModal.close();
+  });
+}
 
-profileFormValidator.enableValidation();
+const avatarModal = new ModalWithForm(avatarModalSelector, onAvatarFormSubmit);
+avatarModal.setEventListeners();
 
 // Delete Modal logic
+function onCardDeletion(card) {
+  api.removeCard(card.getId()).then(() => {
+    card.remove();
+    deleteModal.close();
+  });
+}
+
 const deleteModal = new ModalWithOption(deleteModalSelector, onCardDeletion);
 deleteModal.setEventListeners();
 
@@ -74,11 +84,29 @@ api.getInitialCards().then((data) => {
   });
 });
 
-function onCardDeletion(card) {
-  api.removeCard(card.getId()).then(() => {
-    card.remove();
-    deleteModal.close();
-  });
+function likeCard(card) {
+  // This will revert the likes apperance if it wasn't able to send to the server
+  if (card.isLiked) {
+    card.toggleLikeApperance(false);
+    api
+      .dislikeCard(card.getId())
+      .then(() => {
+        card.isLiked = false;
+      })
+      .catch(() => {
+        card.toggleLikeApperance(true);
+      });
+  } else {
+    card.toggleLikeApperance(true);
+    api
+      .likeCard(card.getId())
+      .then(() => {
+        card.isLiked = true;
+      })
+      .catch(() => {
+        card.toggleLikeApperance(false);
+      });
+  }
 }
 
 function createCard(cardData) {
@@ -92,7 +120,8 @@ function createCard(cardData) {
     () => {
       deleteModal.toDelete = card;
       deleteModal.open();
-    }
+    },
+    () => likeCard(card)
   );
 
   cardContainer.addItem(card.generateCard(), "prepend");
@@ -106,6 +135,7 @@ const cardContainer = new Section({
 
 // Post Modal logic
 function onPostFormSubmit(inputValues) {
+  console.log(inputValues);
   api.postCard(inputValues).then(createCard);
   postModal.close();
   postModal.setInputValues();
@@ -117,12 +147,12 @@ postModal.setEventListeners();
 const postAddBtn = document.querySelector(".profile__post-btn");
 postAddBtn.addEventListener("click", postModal.open);
 
-const postFormValidator = new FormValidator(
-  validatorSettings,
-  postModal.getForm()
-);
-postFormValidator.enableValidation();
-
 // Image Modal logic
 const imageModal = new ModalWithImage(imageModalSelector);
 imageModal.setEventListeners();
+
+// Validation logic
+const forms = Array.from(document.forms);
+forms.forEach((form) => {
+  new FormValidator(validatorSettings, form).enableValidation();
+});

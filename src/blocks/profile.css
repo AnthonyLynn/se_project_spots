@@ -23,8 +23,13 @@
 }
 
 .profile__avatar {
-  border-radius: 8px;
+  position: relative;
   width: 190px;
+  height: 190px;
+}
+
+.profile__image {
+  border-radius: 8px;
   object-fit: cover;
 }
 
@@ -69,11 +74,16 @@
   line-height: 1;
   margin: 0;
   color: #212121;
+  cursor: pointer;
 }
 
 .profile__edit-btn:hover {
-  cursor: pointer;
   opacity: 100%;
+}
+
+.profile__edit-btn_type_avatar {
+  position: absolute;
+  bottom: 18px;
 }
 
 .profile__post-btn {

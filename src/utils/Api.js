@@ -40,6 +40,18 @@ export default class Api {
     );
   }
 
+  editUserAvatar({ avatar }) {
+    return this._defaultPromise(
+      fetch(`${this._baseUrl}/users/me/avatar`, {
+        method: "PATCH",
+        headers: this._headers,
+        body: JSON.stringify({
+          avatar,
+        }),
+      })
+    );
+  }
+
   postCard({ name, link }) {
     return this._defaultPromise(
       fetch(`${this._baseUrl}/cards`, {
@@ -62,16 +74,16 @@ export default class Api {
     );
   }
 
-  likeCard() {
+  likeCard(id) {
     return this._defaultPromise(
       fetch(`${this._baseUrl}/cards/${id}/likes`, {
-        method: "PATCH",
+        method: "PUT",
         headers: this._headers,
       })
     );
   }
 
-  dislikeCard() {
+  dislikeCard(id) {
     return this._defaultPromise(
       fetch(`${this._baseUrl}/cards/${id}/likes`, {
         method: "DELETE",
