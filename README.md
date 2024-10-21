@@ -22,11 +22,11 @@ The site uses different display types, such as flex and grid. It has a responsiv
 
 Page:
 
-![Page](images/screenshot.png)
+![Page](src/images/screenshot.png)
 
 Responsive Layout:
 
-![Resizing](images/resizing.gif)
+![Resizing](src/images/resizing.gif)
 
 **Feature Video**
 
