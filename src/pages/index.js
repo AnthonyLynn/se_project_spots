@@ -1,64 +1,62 @@
 import FormValidator from "../components/FormValidator.js";
 import Card from "../components/Card.js";
 import Section from "../components/Section.js";
+import Profile from "../components/Profile.js";
 import ModalWithForm from "../components/ModalWithForm.js";
 import ModalWithImage from "../components/ModalWithImage.js";
+import ModalWithDelete from "../components/ModalWithDelete.js";
 import Api from "../utils/Api.js";
 import {
   validatorSettings,
-  initialCards,
   cardTemplate,
   cardContainerSelector,
+  profileSelector,
+  deleteModalSelector,
   profileModalSelector,
+  avatarModalSelector,
   postModalSelector,
   imageModalSelector,
 } from "../utils/constants.js";
 import "./index.css";
 
-//-- Variables --//
-
 // Api
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
   headers: {
-    authorization: "c56e30dc-2883-4270-a59e-b2f7bae969c6",
+    authorization: "6a49bc73-4cbf-41b7-bd3f-9c47b1919869",
     "Content-Type": "application/json",
   },
 });
 
-// Avatar info
-const profile = document.querySelector(".profile");
-const profileName = profile.querySelector(".profile__name");
-const profileOccupation = profile.querySelector(".profile__occupation");
-const profileEditBtn = document.querySelector(".profile__edit-btn");
+// Profile logic
+const profile = new Profile(
+  profileSelector,
+  () => {
+    profileModal.setInputValues({
+      name: profile.nameElem.textContent,
+      about: profile.aboutElem.textContent,
+    });
+    profileModal.open();
+  },
+  () => {
+    avatarModal.open();
+  }
+);
 
-// Post
-const postAddBtn = document.querySelector(".profile__post-btn");
+profile.setEventListeners();
 
-// Card logic
-function createCard(cardData) {
-  const card = new Card(cardData, cardTemplate, () => {
-    imageModal.loadImage(cardData);
-    imageModal.open();
-  });
-
-  cardContainer.addItem(card.generateCard(), "prepend");
-}
-
-const cardContainer = new Section({
-  items: initialCards,
-  renderer: createCard,
-  containerSelector: cardContainerSelector,
-});
-
-cardContainer.renderItems();
+api.getUser().then((data) => profile.setData(data));
 
 // Profile Modal logic
 function onProfileFormSubmit(inputValues) {
-  profileName.textContent = inputValues.name;
-  profileOccupation.textContent = inputValues.description;
-
-  profileModal.close();
+  profileModal.setIsSubmiting(true);
+  api
+    .editUserInfo(inputValues)
+    .then((data) => {
+      profile.setInfo(data);
+      profileModal.close();
+    })
+    .finally(() => profileModal.setIsSubmiting(false));
 }
 
 const profileModal = new ModalWithForm(
@@ -67,38 +65,116 @@ const profileModal = new ModalWithForm(
 );
 profileModal.setEventListeners();
 
-profileEditBtn.addEventListener("click", () => {
-  profileModal.setInputValues({
-    name: profileName.textContent,
-    description: profileOccupation.textContent,
-  });
-  profileModal.open();
+// Avatar Modal logic
+function onAvatarFormSubmit(inputValues) {
+  avatarModal.setIsSubmiting(true);
+  api
+    .editUserAvatar(inputValues)
+    .then((data) => {
+      profile.setAvatar(data);
+      avatarModal.close();
+    })
+    .finally(() => avatarModal.setIsSubmiting(false));
+}
+
+const avatarModal = new ModalWithForm(avatarModalSelector, onAvatarFormSubmit);
+avatarModal.setEventListeners();
+
+// Delete Modal logic
+function onCardDeletion(card) {
+  deleteModal.setIsDeleting(true);
+  api
+    .removeCard(card.getId())
+    .then(() => {
+      card.remove();
+      deleteModal.close();
+    })
+    .finally(() => deleteModal.setIsDeleting(false));
+}
+
+const deleteModal = new ModalWithDelete(deleteModalSelector, onCardDeletion);
+deleteModal.setEventListeners();
+
+// Card logic
+api.getInitialCards().then((data) => {
+  data.forEach((cardData) => createCard(cardData));
 });
 
-const profileFormValidator = new FormValidator(
-  validatorSettings,
-  profileModal.getForm()
-);
-profileFormValidator.enableValidation();
+function likeCard(card) {
+  // This will revert the likes apperance if it wasn't able to send to the server
+  if (card.isLiked) {
+    card.toggleLikeApperance(false);
+    api
+      .dislikeCard(card.getId())
+      .then(() => {
+        card.isLiked = false;
+      })
+      .catch(() => {
+        card.toggleLikeApperance(true);
+      });
+  } else {
+    card.toggleLikeApperance(true);
+    api
+      .likeCard(card.getId())
+      .then(() => {
+        card.isLiked = true;
+      })
+      .catch(() => {
+        card.toggleLikeApperance(false);
+      });
+  }
+}
+
+function createCard(cardData) {
+  const card = new Card(
+    cardData,
+    cardTemplate,
+    () => {
+      imageModal.loadImage(cardData);
+      imageModal.open();
+    },
+    () => {
+      deleteModal.toDelete = card;
+      deleteModal.open();
+    },
+    () => likeCard(card)
+  );
+
+  cardContainer.addItem(card.generateCard(), "prepend");
+}
+
+const cardContainer = new Section({
+  items: [],
+  renderer: createCard,
+  containerSelector: cardContainerSelector,
+});
 
 // Post Modal logic
 function onPostFormSubmit(inputValues) {
-  createCard(inputValues);
-  postModal.close();
-  postModal.setInputValues();
+  postModal.setIsSubmiting(true);
+  console.log(inputValues);
+  api
+    .postCard(inputValues)
+    .then((data) => {
+      createCard(data);
+      postModal.close();
+      postModal.setInputValues();
+    })
+    .finally(() => postModal.setIsSubmiting(false));
 }
 
 const postModal = new ModalWithForm(postModalSelector, onPostFormSubmit);
 postModal.setEventListeners();
 
+const postAddBtn = document.querySelector(".profile__post-btn");
 postAddBtn.addEventListener("click", postModal.open);
-
-const postFormValidator = new FormValidator(
-  validatorSettings,
-  postModal.getForm()
-);
-postFormValidator.enableValidation();
 
 // Image Modal logic
 const imageModal = new ModalWithImage(imageModalSelector);
 imageModal.setEventListeners();
+
+// Validation logic
+const forms = Array.from(document.forms);
+forms.forEach((form) => {
+  new FormValidator(validatorSettings, form).enableValidation();
+});
