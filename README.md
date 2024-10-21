@@ -22,11 +22,11 @@ The site uses different display types, such as flex and grid. It has a responsiv
 
 Page:
 
-![Page](images/screenshot.png)
+![Page](<%= require('images/screenshot.png')%>)
 
 Responsive Layout:
 
-![Resizing](images/resizing.gif)
+![Resizing](<%= require('images/resizing.gif')%>)
 
 **Feature Video**
 

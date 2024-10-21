@@ -4,8 +4,10 @@ export default class ModalWithForm extends Modal {
   constructor(selector, onSubmit) {
     super(selector);
 
-    this._form = this._modal.querySelector(`.modal__form`);
-    this._inputList = this._modal.querySelectorAll(`.modal__input`);
+    this._form = this._modal.querySelector(".modal__form");
+    this._submitBtn = this._modal.querySelector(".modal__button");
+    this._submitText = this._submitBtn.textContent;
+    this._inputList = this._modal.querySelectorAll(".modal__input");
     this._onSubmit = onSubmit;
   }
 
@@ -25,6 +27,14 @@ export default class ModalWithForm extends Modal {
 
   getForm() {
     return this._form;
+  }
+
+  setIsSubmiting(isSubmiting) {
+    if (isSubmiting) {
+      this._submitBtn.textContent = "Saving...";
+    } else {
+      this._submitBtn.textContent = this._submitText;
+    }
   }
 
   _getInputValues() {
