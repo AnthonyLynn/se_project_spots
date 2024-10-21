@@ -4,7 +4,7 @@ import Section from "../components/Section.js";
 import Profile from "../components/Profile.js";
 import ModalWithForm from "../components/ModalWithForm.js";
 import ModalWithImage from "../components/ModalWithImage.js";
-import ModalWithOption from "../components/ModalWithOption.js";
+import ModalWithDelete from "../components/ModalWithDelete.js";
 import Api from "../utils/Api.js";
 import {
   validatorSettings,
@@ -29,13 +29,19 @@ const api = new Api({
 });
 
 // Profile logic
-const profile = new Profile(profileSelector, () => {
-  profileModal.setInputValues({
-    name: profile.nameElem.textContent,
-    about: profile.aboutElem.textContent,
-  });
-  profileModal.open();
-});
+const profile = new Profile(
+  profileSelector,
+  () => {
+    profileModal.setInputValues({
+      name: profile.nameElem.textContent,
+      about: profile.aboutElem.textContent,
+    });
+    profileModal.open();
+  },
+  () => {
+    avatarModal.open();
+  }
+);
 
 profile.setEventListeners();
 
@@ -43,10 +49,14 @@ api.getUser().then((data) => profile.setData(data));
 
 // Profile Modal logic
 function onProfileFormSubmit(inputValues) {
-  api.editUserInfo(inputValues).then((data) => {
-    profile.setInfo(data);
-    profileModal.close();
-  });
+  profileModal.setIsSubmiting(true);
+  api
+    .editUserInfo(inputValues)
+    .then((data) => {
+      profile.setInfo(data);
+      profileModal.close();
+    })
+    .finally(() => profileModal.setIsSubmiting(false));
 }
 
 const profileModal = new ModalWithForm(
@@ -57,10 +67,14 @@ profileModal.setEventListeners();
 
 // Avatar Modal logic
 function onAvatarFormSubmit(inputValues) {
-  api.editUserAvatar(inputValues).then((data) => {
-    profile.setAvatar(data);
-    avatarModal.close();
-  });
+  avatarModal.setIsSubmiting(true);
+  api
+    .editUserAvatar(inputValues)
+    .then((data) => {
+      profile.setAvatar(data);
+      avatarModal.close();
+    })
+    .finally(() => avatarModal.setIsSubmiting(false));
 }
 
 const avatarModal = new ModalWithForm(avatarModalSelector, onAvatarFormSubmit);
@@ -68,20 +82,22 @@ avatarModal.setEventListeners();
 
 // Delete Modal logic
 function onCardDeletion(card) {
-  api.removeCard(card.getId()).then(() => {
-    card.remove();
-    deleteModal.close();
-  });
+  deleteModal.setIsDeleting(true);
+  api
+    .removeCard(card.getId())
+    .then(() => {
+      card.remove();
+      deleteModal.close();
+    })
+    .finally(() => deleteModal.setIsDeleting(false));
 }
 
-const deleteModal = new ModalWithOption(deleteModalSelector, onCardDeletion);
+const deleteModal = new ModalWithDelete(deleteModalSelector, onCardDeletion);
 deleteModal.setEventListeners();
 
 // Card logic
 api.getInitialCards().then((data) => {
-  data.forEach((cardData) => {
-    createCard(cardData);
-  });
+  data.forEach((cardData) => createCard(cardData));
 });
 
 function likeCard(card) {
@@ -135,10 +151,16 @@ const cardContainer = new Section({
 
 // Post Modal logic
 function onPostFormSubmit(inputValues) {
+  postModal.setIsSubmiting(true);
   console.log(inputValues);
-  api.postCard(inputValues).then(createCard);
-  postModal.close();
-  postModal.setInputValues();
+  api
+    .postCard(inputValues)
+    .then((data) => {
+      createCard(data);
+      postModal.close();
+      postModal.setInputValues();
+    })
+    .finally(() => postModal.setIsSubmiting(false));
 }
 
 const postModal = new ModalWithForm(postModalSelector, onPostFormSubmit);
