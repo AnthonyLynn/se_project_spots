@@ -1,14 +1,3 @@
-//-- Varaibles --//
-const settings = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__button",
-  inactiveButtonClass: "modal__button_disabled",
-  inputErrorClass: "modal__input_type_error",
-  errorClass: "modal__error_visible",
-};
-
-//-- Functions --//
 function showInputError(form, input, errorMessage, config) {
   const errorElement = form.querySelector(`#${input.id}-error`);
 
@@ -33,6 +22,18 @@ function checkInputValidity(form, input, config) {
   } else {
     showInputError(form, input, input.validationMessage, config);
   }
+}
+
+export function checkFormValidity(form, config) {
+  const inputs = Array.from(form.querySelectorAll(config.inputSelector));
+  const button = form.querySelector(config.submitButtonSelector);
+
+  toggleButtonState(inputs, button);
+
+  inputs.forEach((input) => {
+    checkInputValidity(form, input, config);
+    toggleButtonState(inputs, button);
+  });
 }
 
 function toggleButtonState(inputs, button) {
@@ -69,11 +70,9 @@ function setEventListeners(form, config) {
   });
 }
 
-function enableValidation(config) {
+export function enableValidation(config) {
   const forms = Array.from(document.querySelectorAll(config.formSelector));
   forms.forEach((form) => {
     setEventListeners(form, config);
   });
 }
-
-enableValidation(settings);
