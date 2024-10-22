@@ -24,19 +24,17 @@ function checkInputValidity(form, input, config) {
   }
 }
 
-export function checkFormValidity(form, config) {
+function hideFormInputErrors(form, config) {
   const inputs = Array.from(form.querySelectorAll(config.inputSelector));
-  const button = form.querySelector(config.submitButtonSelector);
-
-  toggleButtonState(inputs, button);
 
   inputs.forEach((input) => {
-    checkInputValidity(form, input, config);
-    toggleButtonState(inputs, button);
+    hideInputError(form, input, config);
   });
 }
 
 function toggleButtonState(inputs, button) {
+  if (inputs.length === 0) return;
+
   const notValid = inputs.some((input) => {
     return !input.validity.valid;
   });
@@ -52,7 +50,7 @@ function enableButton(button) {
   button.disabled = false;
 }
 
-function disableButton(button) {
+export function disableButton(button) {
   button.disabled = true;
 }
 
@@ -67,6 +65,10 @@ function setEventListeners(form, config) {
       checkInputValidity(form, input, config);
       toggleButtonState(inputs, button);
     });
+  });
+
+  form.addEventListener("reset", () => {
+    hideFormInputErrors(form, config);
   });
 }
 

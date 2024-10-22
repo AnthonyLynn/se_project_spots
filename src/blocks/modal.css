@@ -112,6 +112,12 @@
   flex-direction: column;
 }
 
+.modal__form_type_row {
+  justify-content: center;
+  column-gap: 20px;
+  flex-direction: row;
+}
+
 .modal__fieldset {
   margin: 0;
   padding: 0;
@@ -209,8 +215,6 @@
 }
 
 .modal__button_type_cancel {
-  padding: 18px 0;
-  width: 156px;
   color: #212121;
   background-color: rgba(0, 0, 0, 0);
   border: 1px solid #212121;
@@ -246,12 +250,6 @@
   margin-top: 8px;
 }
 
-.modal__btn-option {
-  display: flex;
-  justify-content: center;
-  column-gap: 20px;
-}
-
 @media screen and (max-width: 768px) {
   .modal {
     padding: 0 16px;
@@ -263,6 +261,10 @@
 
   .modal__container_type_preview {
     padding: 0;
+  }
+
+  .modal__button {
+    width: 100%;
   }
 
   .modal__image {

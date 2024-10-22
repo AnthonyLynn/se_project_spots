@@ -4,10 +4,6 @@ export default class Api {
     this._headers = options.headers;
   }
 
-  _defaultPromise(promise) {
-    return promise.then(this._getResult).catch(console.error);
-  }
-
   _getResult(res) {
     if (res.ok) {
       return res.json();
@@ -16,79 +12,67 @@ export default class Api {
   }
 
   getInitialCards() {
-    return this._defaultPromise(
-      fetch(`${this._baseUrl}/cards`, { headers: this._headers })
+    return fetch(`${this._baseUrl}/cards`, { headers: this._headers }).then(
+      this._getResult
     );
   }
 
   getUser() {
-    return this._defaultPromise(
-      fetch(`${this._baseUrl}/users/me`, { headers: this._headers })
+    return fetch(`${this._baseUrl}/users/me`, { headers: this._headers }).then(
+      this._getResult
     );
   }
 
   editUserInfo({ name, about }) {
-    return this._defaultPromise(
-      fetch(`${this._baseUrl}/users/me`, {
-        method: "PATCH",
-        headers: this._headers,
-        body: JSON.stringify({
-          name,
-          about,
-        }),
-      })
-    );
+    return fetch(`${this._baseUrl}/users/me`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        about,
+      }),
+    }).then(this._getResult);
   }
 
   editUserAvatar({ avatar }) {
-    return this._defaultPromise(
-      fetch(`${this._baseUrl}/users/me/avatar`, {
-        method: "PATCH",
-        headers: this._headers,
-        body: JSON.stringify({
-          avatar,
-        }),
-      })
-    );
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: "PATCH",
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar,
+      }),
+    }).then(this._getResult);
   }
 
   postCard({ name, link }) {
-    return this._defaultPromise(
-      fetch(`${this._baseUrl}/cards`, {
-        method: "POST",
-        headers: this._headers,
-        body: JSON.stringify({
-          name,
-          link,
-        }),
-      })
-    );
+    return fetch(`${this._baseUrl}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        link,
+      }),
+    }).then(this._getResult);
   }
 
   removeCard(id) {
-    return this._defaultPromise(
-      fetch(`${this._baseUrl}/cards/${id}`, {
-        method: "DELETE",
-        headers: this._headers,
-      })
-    );
+    return fetch(`${this._baseUrl}/cards/${id}`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then(this._getResult);
   }
 
   likeCard(id) {
-    return this._defaultPromise(
-      fetch(`${this._baseUrl}/cards/${id}/likes`, {
-        method: "PUT",
-        headers: this._headers,
-      })
-    );
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      method: "PUT",
+      headers: this._headers,
+    }).then(this._getResult);
   }
 
   dislikeCard(id) {
-    return this._defaultPromise(
-      fetch(`${this._baseUrl}/cards/${id}/likes`, {
-        method: "DELETE",
-        headers: this._headers,
-      })
-    );
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      method: "DELETE",
+      headers: this._headers,
+    }).then(this._getResult);
   }
 }

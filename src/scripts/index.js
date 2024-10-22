@@ -1,10 +1,8 @@
 import "../pages/index.css";
 import Api from "../utils/Api.js";
-import {
-  checkFormValidity,
-  enableValidation,
-  disableButton,
-} from "./validation.js";
+import { handleSubmit } from "../utils/utils.js";
+import { settings } from "../utils/constants.js";
+import { enableValidation, disableButton } from "./validation.js";
 
 // Api
 const api = new Api({
@@ -52,7 +50,7 @@ function onAvatarEdit() {
 editBtn.addEventListener("click", onInfoEdit);
 avatarBtn.addEventListener("click", onAvatarEdit);
 
-api.getUser().then(setData);
+api.getUser().then(setData).catch(console.error);
 
 // Form
 function setInputValues(form, inputList, inputValues) {
@@ -67,8 +65,6 @@ function setInputValues(form, inputList, inputValues) {
   } else {
     form.reset();
   }
-
-  checkFormValidity(form, settings);
 }
 
 function getInputValues(inputList) {
@@ -80,29 +76,16 @@ function getInputValues(inputList) {
   return inputValues;
 }
 
-const savingText = "Saving...";
-const deletingText = "Deleting...";
-function setLoadingText(button, text) {
-  const oldText = button.textContent;
-  return function (isSubmiting) {
-    if (isSubmiting) {
-      button.textContent = text;
-    } else {
-      button.textContent = oldText;
-    }
-  };
-}
-
 // Modal
 let currentModal;
 
-function escapeHandler(evt) {
+function handelEscape(evt) {
   if (evt.key === "Escape") {
     closeModal(currentModal);
   }
 }
 
-function outsideClickHandler(evt) {
+function handelOutsideClick(evt) {
   if (evt.currentTarget === evt.target) {
     closeModal(currentModal);
   }
@@ -111,17 +94,17 @@ function outsideClickHandler(evt) {
 function openModal(modal) {
   currentModal = modal;
   modal.classList.add("modal_opened");
-  document.addEventListener("keydown", escapeHandler);
+  document.addEventListener("keydown", handelEscape);
 }
 
 function closeModal(modal) {
   modal.classList.remove("modal_opened");
-  document.removeEventListener("keydown", escapeHandler);
+  document.removeEventListener("keydown", handelEscape);
 }
 
 const modals = Array.from(document.querySelectorAll(".modal"));
 modals.forEach((modal) => {
-  modal.addEventListener("click", outsideClickHandler);
+  modal.addEventListener("mousedown", handelOutsideClick);
 
   const exitBtn = modal.querySelector(".modal__exit-btn");
   exitBtn.addEventListener("click", () => closeModal(modal));
@@ -133,19 +116,16 @@ const profileForm = document.forms["profile-form"];
 const profileSubmitBtn = profileModal.querySelector(".modal__button");
 const profileInputList = profileModal.querySelectorAll(".modal__input");
 
-const setProfileLoading = setLoadingText(profileSubmitBtn, savingText);
-
 function onProfileFormSubmit(evt) {
-  evt.preventDefault();
-  const inputValues = getInputValues(profileInputList);
-  setProfileLoading(true);
-  api
-    .editUserInfo(inputValues)
-    .then((data) => {
+  function makeRequest() {
+    return api.editUserInfo(getInputValues(profileInputList)).then((data) => {
       setInfo(data);
+      disableButton(profileSubmitBtn);
       closeModal(profileModal);
-    })
-    .finally(() => setProfileLoading(false));
+    });
+  }
+
+  handleSubmit(makeRequest, evt);
 }
 
 profileForm.addEventListener("submit", onProfileFormSubmit);
@@ -156,20 +136,17 @@ const avatarForm = document.forms["avatar-form"];
 const avatarSubmitBtn = avatarModal.querySelector(".modal__button");
 const avatarInputList = avatarModal.querySelectorAll(".modal__input");
 
-const setAvatarLoading = setLoadingText(avatarSubmitBtn, savingText);
-
 function onAvatarFormSubmit(evt) {
-  evt.preventDefault();
-  const inputValues = getInputValues(avatarInputList);
-  setAvatarLoading(true);
-  api
-    .editUserAvatar(inputValues)
-    .then((data) => {
+  function makeRequest() {
+    return api.editUserAvatar(getInputValues(avatarInputList)).then((data) => {
       setAvatar(data);
-      closeModal(avatarModal);
       setInputValues(avatarForm, avatarInputList);
-    })
-    .finally(() => setAvatarLoading(false));
+      disableButton(avatarSubmitBtn);
+      closeModal(avatarModal);
+    });
+  }
+
+  handleSubmit(makeRequest, evt);
 }
 
 avatarForm.addEventListener("submit", onAvatarFormSubmit);
@@ -177,23 +154,18 @@ avatarForm.addEventListener("submit", onAvatarFormSubmit);
 // Post Modal
 const postModal = document.querySelector("#post-modal");
 const postForm = document.forms["post-form"];
-const postSubmitBtn = postModal.querySelector(".modal__button");
 const postInputList = postModal.querySelectorAll(".modal__input");
 
-const setPostLoading = setLoadingText(postSubmitBtn, savingText);
-
 function onPostFormSubmit(evt) {
-  evt.preventDefault();
-  const inputValues = getInputValues(postInputList);
-  setPostLoading(true);
-  api
-    .postCard(inputValues)
-    .then((data) => {
+  function makeRequest() {
+    return api.postCard(getInputValues(postInputList)).then((data) => {
       renderCard(data);
       closeModal(postModal);
       setInputValues(postForm, postInputList);
-    })
-    .finally(() => setPostLoading(false));
+    });
+  }
+
+  handleSubmit(makeRequest, evt);
 }
 
 postForm.addEventListener("submit", onPostFormSubmit);
@@ -206,23 +178,21 @@ let currentCard;
 let currentCardId;
 
 const deleteModal = document.querySelector("#delete-modal");
-const deleteBtn = deleteModal.querySelector(`#delete-btn`);
+const deleteForm = document.forms["delete-form"];
 const cancelBtn = deleteModal.querySelector(`#cancel-btn`);
 
-const setDeleteLoading = setLoadingText(deleteBtn, deletingText);
-
-function onDeleteCard() {
-  setDeleteLoading(true);
-  api
-    .removeCard(currentCardId)
-    .then(() => {
+function onDeleteCard(evt) {
+  function makeRequest() {
+    return api.removeCard(currentCardId).then(() => {
       currentCard.remove();
       closeModal(deleteModal);
-    })
-    .finally(() => setDeleteLoading(false));
+    });
+  }
+
+  handleSubmit(makeRequest, evt, "Deleting...");
 }
 
-deleteBtn.addEventListener("click", onDeleteCard);
+deleteForm.addEventListener("submit", onDeleteCard);
 cancelBtn.addEventListener("click", () => closeModal(deleteModal));
 
 // Image Modal
@@ -284,6 +254,7 @@ function createCard(data, selector) {
         .then(() => {
           isLiked = false;
         })
+        .catch(console.error)
         .finally(() => {
           enableCardLike(likeBtn, isLiked);
         });
@@ -294,6 +265,7 @@ function createCard(data, selector) {
         .then(() => {
           isLiked = true;
         })
+        .catch(console.error)
         .finally(() => {
           enableCardLike(likeBtn, isLiked);
         });
@@ -321,16 +293,8 @@ function renderCard(data, method = "prepend") {
 
 api
   .getInitialCards()
-  .then((cards) => cards.forEach((card) => renderCard(card)));
+  .then((cards) => cards.forEach((card) => renderCard(card)))
+  .catch(console.error);
 
 // Validation
-const settings = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__button",
-  inactiveButtonClass: "modal__button_disabled",
-  inputErrorClass: "modal__input_type_error",
-  errorClass: "modal__error_visible",
-};
-
 enableValidation(settings);
