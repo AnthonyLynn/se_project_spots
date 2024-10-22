@@ -2,7 +2,12 @@ import "../pages/index.css";
 import Api from "../utils/Api.js";
 import { handleSubmit } from "../utils/utils.js";
 import { settings } from "../utils/constants.js";
-import { enableValidation, disableButton } from "./validation.js";
+import {
+  hideFormInputErrors,
+  enableValidation,
+  enableButton,
+  disableButton,
+} from "./validation.js";
 
 // Api
 const api = new Api({
@@ -40,6 +45,8 @@ function onInfoEdit() {
     name: name.textContent,
     about: about.textContent,
   });
+  hideFormInputErrors(profileForm, settings);
+  disableButton(profileSubmitBtn);
   openModal(profileModal);
 }
 
@@ -133,7 +140,6 @@ profileForm.addEventListener("submit", onProfileFormSubmit);
 // Avatar Modal
 const avatarModal = document.querySelector("#avatar-modal");
 const avatarForm = document.forms["avatar-form"];
-const avatarSubmitBtn = avatarModal.querySelector(".modal__button");
 const avatarInputList = avatarModal.querySelectorAll(".modal__input");
 
 function onAvatarFormSubmit(evt) {
@@ -141,7 +147,6 @@ function onAvatarFormSubmit(evt) {
     return api.editUserAvatar(getInputValues(avatarInputList)).then((data) => {
       setAvatar(data);
       setInputValues(avatarForm, avatarInputList);
-      disableButton(avatarSubmitBtn);
       closeModal(avatarModal);
     });
   }
@@ -179,6 +184,7 @@ let currentCardId;
 
 const deleteModal = document.querySelector("#delete-modal");
 const deleteForm = document.forms["delete-form"];
+const deleteBtn = deleteModal.querySelector(`#delete-btn`);
 const cancelBtn = deleteModal.querySelector(`#cancel-btn`);
 
 function onDeleteCard(evt) {
@@ -277,6 +283,7 @@ function createCard(data, selector) {
   trashBtn.addEventListener("click", () => {
     currentCard = element;
     currentCardId = cardId;
+    enableButton(deleteBtn);
     openModal(deleteModal);
   });
 

@@ -24,7 +24,7 @@ function checkInputValidity(form, input, config) {
   }
 }
 
-function hideFormInputErrors(form, config) {
+export function hideFormInputErrors(form, config) {
   const inputs = Array.from(form.querySelectorAll(config.inputSelector));
 
   inputs.forEach((input) => {
@@ -46,7 +46,7 @@ function toggleButtonState(inputs, button) {
   }
 }
 
-function enableButton(button) {
+export function enableButton(button) {
   button.disabled = false;
 }
 
@@ -69,6 +69,7 @@ function setEventListeners(form, config) {
 
   form.addEventListener("reset", () => {
     hideFormInputErrors(form, config);
+    disableButton(button);
   });
 }
 
