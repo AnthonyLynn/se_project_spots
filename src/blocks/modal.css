@@ -46,6 +46,11 @@
   padding: 30px 50px 46px;
 }
 
+.modal__container_type_delete {
+  max-width: 630px;
+  padding: 32px 20px;
+}
+
 .modal__top {
   display: flex;
   justify-content: space-between;
@@ -59,6 +64,13 @@
   font-size: 32px;
   font-weight: 500;
   line-height: 1;
+  color: #212121;
+}
+
+.modal__header_type_center {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
   color: #212121;
 }
 
@@ -98,6 +110,12 @@
   margin: 0;
   display: flex;
   flex-direction: column;
+}
+
+.modal__form_type_row {
+  justify-content: center;
+  column-gap: 20px;
+  flex-direction: row;
 }
 
 .modal__fieldset {
@@ -164,13 +182,13 @@
 }
 
 .modal__button {
-  padding: 18px 58px;
+  padding: 18px 0;
   font-family: Poppins, Arial, Helvetica, sans-serif;
   font-size: 16px;
   font-weight: 500;
   line-height: 1;
   color: #fcf5e5;
-  width: max-content;
+  width: 156px;
   background-color: #212121;
   border: none;
   border-radius: 8px;
@@ -184,6 +202,28 @@
 .modal__button:disabled {
   opacity: 0.5;
   cursor: default;
+}
+
+.modal__button_type_delete {
+  color: #212121;
+  background-color: #ff6565;
+}
+
+.modal__button_type_delete:hover {
+  opacity: 1;
+  background-color: #ff3333;
+}
+
+.modal__button_type_cancel {
+  color: #212121;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid #212121;
+}
+
+.modal__button_type_cancel:hover {
+  opacity: 1;
+  color: #ffffff;
+  background-color: #212121;
 }
 
 .modal__image {
@@ -221,6 +261,10 @@
 
   .modal__container_type_preview {
     padding: 0;
+  }
+
+  .modal__button {
+    width: 100%;
   }
 
   .modal__image {
